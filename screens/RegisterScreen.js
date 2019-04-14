@@ -1,230 +1,234 @@
 //import { registerRootComponent } from 'expo';
-import React, {Component} from 'react';
-import {AppRegistry, StyleSheet, TextInput, View, Alert, 
-        Button, Text, Picker, KeyboardAvoidingView,
-        ScrollView} from 'react-native';
+import React, { Component } from 'react';
+import {AppRegistry, StyleSheet, TextInput, View, Alert,
+  Button, Text, Picker, KeyboardAvoidingView,
+  ScrollView
+} from 'react-native';
+import { SecureStore } from 'expo';
 //import {Dropdown} from 'react-native-material-dropdown';
 
 
 export default class registration extends Component {
-    static navigationOptions = ({navigation}) => ({
-        title: 'PERSONAL INFORMATION'
-        
-      })
-//Creating constructor
-constructor(props) {
+  static navigationOptions = ({ navigation }) => ({
+    title: 'PERSONAL INFORMATION'
+
+  })
+  //Creating constructor
+  constructor(props) {
     super(props)
 
     this.state = {
-        idNumber:  '',
-        fullName: '',
-        centre: 'Centre/Kuliyyah',
-        emailAddress: '',
-        phoneNumber: '',
-        barcodeNumber: '',
-        pin: '',
-        state: 'Centre/Kuliyyah',
+      idNumber: '',
+      fullName: '',
+      centre: 'Centre/Kuliyyah',
+      emailAddress: '',
+      phoneNumber: '',
+      barcodeNumber: '',
+      pin: '',
+      state: 'Centre/Kuliyyah',
 
     }
-}
+  }
 
-//Creating function to send TextInput data on server
+  //Creating function to send TextInput data on server
 
-UserRegistrationFunction = () => {
-	const {idNumber} = this.state;
-	const {fullName} = this.state;
-	const {centre} = this.state;
-	const {emailAddress} = this.state;
-	const {phoneNumber} = this.state;
-	const {barcodeNumber} = this.state;
-	const {pin} = this.state;
+  UserRegistrationFunction = () => {
+    const { idNumber } = this.state;
+    const { fullName } = this.state;
+    const { centre } = this.state;
+    const { emailAddress } = this.state;
+    const { phoneNumber } = this.state;
+    const { barcodeNumber } = this.state;
+    const { pin } = this.state;
 
-	let data = JSON.stringify({
-		//name: UserName,
-		idNumber : idNumber,
-		fullName : fullName,
-		centre : centre,
-		emailAddress : emailAddress,
-		phoneNumber : phoneNumber,
-		barcodeNumber : barcodeNumber,
-		pin : pin
-	});
-	// Alert.alert(data);
-	Alert.alert('Please wait.');
+    let data = JSON.stringify({
+      //name: UserName,
+      idNumber: idNumber,
+      fullName: fullName,
+      centre: centre,
+      emailAddress: emailAddress,
+      phoneNumber: phoneNumber,
+      barcodeNumber: barcodeNumber,
+      pin: pin
+    });
+    // Alert.alert(data);
+    Alert.alert('Please wait.');
 
-  // AFFIQ	fetch("http://192.168.1.8:8000/api/login", {
-//  NASN fetch("http://172.20.10.14:8000/api/login", {
-	fetch("http://192.168.1.8:8000/api/register", {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-		},
-		body: data,
-	})
-	.then(res => res.json())
-	.then(
-		(result) => {
-			if(result.success) {
-         
-                 Alert.alert('Registration succeeded!');
-                 this.props.navigation.navigate('LoginScreen');
-                SecureStore.setItemAsync('user_token', result.token)
+    // AFFIQ	fetch("http://192.168.1.8:8000/api/login", {
+    //  NASN fetch("http://172.20.10.14:8000/api/login", {
+    fetch("http://192.168.1.8:8000/api/register", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: data,
+    })
+      .then(res => res.json())
+      .then(
+        (result) => {
+          if (result.success) {
+
+            Alert.alert('Registration succeeded!');
+            SecureStore.setItemAsync('user_token', result.token)           
+            this.props.navigation.navigate('LoginScreen');
+            
+          
             //     .then(() => {
             //       this.props.navigation.navigate('LoginScreen');
             // });
+          }
+          else {
+            Alert.alert('Registration failed! ' + result.message);
+          }
+        },
+        (error) => {
+          // Alert.alert(error);
+          Alert.alert("An error just occurred.");
         }
-			else {
-				Alert.alert('Registration failed! ' + result.message);
-			}
-		},
-		(error) => {
-			// Alert.alert(error);
-			Alert.alert("An error just occurred.");
-		}
-	)
-}
+      )
+  }
 
-render() {
+  render() {
 
     return (
 
-         <View style={styles.ReservationContainer}>
+      <View style={styles.ReservationContainer}>
         {/* <Text style={styles.PageTitle}>PERSONAL INFORMATION</Text> */}
 
         <KeyboardAvoidingView style={styles.content} behavior="position" makeScrollable>
-        
-        <TextInput
-        //placeHolder
-        placeholder = "Staff Number/Matric Number"
-        onChangeText = {(idNumber) => this.setState({idNumber})}
-        borderColor= '#028A7E'
-        //underlineColorAndroid = 'transparent'
-        style={styles.TextInputStyleClass}
-        />
 
-       
-        <TextInput
-        //placeHolder
-        placeholder = "Full Name"
-        onChangeText = {(fullName) => this.setState({fullName})}
-        borderColor= '#028A7E'
-        //underlineColorAndroid = 'transparent'
-
-        style={styles.TextInputStyleClass}
-        />
-
-<Picker
-selectedvalue={this.state.centre}
-style={{height:50, width:300, alignItems: 'center',}}
-borderColor= '#028A7E'
-//style={{textAlign: 'center' }}
-
-        onValueChange={(itemValue, itemIndex) => this.setState({centre: itemValue})}>
-
-<Picker.Item label = "Centre/Kuliyyah" value="Centre/Kuliyyah" />
-<Picker.Item label = "Ahmad Ibrahim Kuliyyah of Laws" value="Ahmad Ibrahim Kuliyyah of Laws"/>
-<Picker.Item label = "Centre for Foundation Studies" value="Centre for Foundation Studies"/>
-<Picker.Item label = "Centre for Languages and Pre-University Academic Development" value="Centre for Languages and Pre-University Academic Development"/>
-<Picker.Item label = "IIUM Academy of Graduate and Professional Studies" value="IIUM Academy of Graduate and Professional Studies"/>
-<Picker.Item label = "Kuliyyah of Allied Health Sciences" value="Kuliyyah of Allied Health Sciences"/>
-<Picker.Item label = "Kuliyyah of Architecture and Environmental Design" value="Kuliyyah of Architecture and Environmental Design"/>
-<Picker.Item label = "Kuliyyah of Dentistry" value="Kuliyyah of Dentistry"/>
-<Picker.Item label = "Kuliyyah of Economics and Management Sciences" value="Kuliyyah of Economics and Management Sciences"/>
-<Picker.Item label = "Kuliyyah of Education" value="Kuliyyah of Education"/>
-<Picker.Item label = "Kuliyyah of Engineering" value="Kuliyyah of Engineering"/>
-<Picker.Item label = "Kuliyyah of Information and Communication Technology" value="Kuliyyah of Information and Communication Technology"/>
-<Picker.Item label = "Kuliyyah of Islamic Revealed Knowledge and Human Sciences" value="Kuliyyah of Islamic Revealed Knowledge and Human Sciences"/>
-<Picker.Item label = "Kuliyyah of Languages and Management" value="Kuliyyah of Languages and Management"/>
-<Picker.Item label = "Kuliyyah of Pharmacy" value="Kuliyyah of Pharmacy"/>
-<Picker.Item label = "Kuliyyah of Science" value="Kuliyyah of Science"/>
-
-</Picker> 
-              
-        
-        <TextInput
-        //placeHolder
-        placeholder = "Email Address"
-        onChangeText = {(emailAddress) => this.setState({emailAddress})}
-        borderColor= '#028A7E'
-        keyboardType='email-address'
-        style={styles.TextInputStyleClass}
-        />
-
-        
-        <TextInput
-        //placeHolder
-        placeholder = "Phone Number"
-        onChangeText = {(phoneNumber)=> this.setState({phoneNumber})}
-        borderColor= '#028A7E'
-        keyboardType='numeric'
-        //placeholderTextColor='#028A7E'
-        //underlineColorAndroid = '#028A7E'
-
-        style={styles.TextInputStyleClass}
-       />
+          <TextInput
+            //placeHolder
+            placeholder="Staff Number/Matric Number"
+            onChangeText={(idNumber) => this.setState({ idNumber })}
+            borderColor='#028A7E'
+            //underlineColorAndroid = 'transparent'
+            style={styles.TextInputStyleClass}
+          />
 
 
-        {/*Next Page*/}
-        {/*<Button title = "NEXT" onPress={this.UserRegistrationFunction} color="#028A7E"/>*/}
+          <TextInput
+            //placeHolder
+            placeholder="Full Name"
+            onChangeText={(fullName) => this.setState({ fullName })}
+            borderColor='#028A7E'
+            //underlineColorAndroid = 'transparent'
 
-      {/* <Text style={styles.PageTitle}>ACOUNT INFORMATION</Text> */}
-        <TextInput
-        //placeHolder
-        placeholder = "Barcode Number"
-        onChangeText = {(barcodeNumber) => this.setState({barcodeNumber})}
-        borderColor= '#028A7E'
-        style={styles.TextInputStyleClass}
-        />
+            style={styles.TextInputStyleClass}
+          />
+
+          <Picker
+            selectedvalue={this.state.centre}
+            style={{ height: 50, width: 300, alignItems: 'center', }}
+            borderColor='#028A7E'
+            //style={{textAlign: 'center' }}
+
+            onValueChange={(itemValue, itemIndex) => this.setState({ centre: itemValue })}>
+
+            <Picker.Item label="Centre/Kuliyyah" value="Centre/Kuliyyah" />
+            <Picker.Item label="Ahmad Ibrahim Kuliyyah of Laws" value="Ahmad Ibrahim Kuliyyah of Laws" />
+            <Picker.Item label="Centre for Foundation Studies" value="Centre for Foundation Studies" />
+            <Picker.Item label="Centre for Languages and Pre-University Academic Development" value="Centre for Languages and Pre-University Academic Development" />
+            <Picker.Item label="IIUM Academy of Graduate and Professional Studies" value="IIUM Academy of Graduate and Professional Studies" />
+            <Picker.Item label="Kuliyyah of Allied Health Sciences" value="Kuliyyah of Allied Health Sciences" />
+            <Picker.Item label="Kuliyyah of Architecture and Environmental Design" value="Kuliyyah of Architecture and Environmental Design" />
+            <Picker.Item label="Kuliyyah of Dentistry" value="Kuliyyah of Dentistry" />
+            <Picker.Item label="Kuliyyah of Economics and Management Sciences" value="Kuliyyah of Economics and Management Sciences" />
+            <Picker.Item label="Kuliyyah of Education" value="Kuliyyah of Education" />
+            <Picker.Item label="Kuliyyah of Engineering" value="Kuliyyah of Engineering" />
+            <Picker.Item label="Kuliyyah of Information and Communication Technology" value="Kuliyyah of Information and Communication Technology" />
+            <Picker.Item label="Kuliyyah of Islamic Revealed Knowledge and Human Sciences" value="Kuliyyah of Islamic Revealed Knowledge and Human Sciences" />
+            <Picker.Item label="Kuliyyah of Languages and Management" value="Kuliyyah of Languages and Management" />
+            <Picker.Item label="Kuliyyah of Pharmacy" value="Kuliyyah of Pharmacy" />
+            <Picker.Item label="Kuliyyah of Science" value="Kuliyyah of Science" />
+
+          </Picker>
 
 
-        <TextInput
-        //placeHolder
-        placeholder = "6-digit PIN"
-        onChangeText = {(pin) => this.setState({pin})}
-        style={styles.TextInputStyleClass}
-        borderColor= '#028A7E'
-        secureTextEntry={true}
-        /> 
-       <Button title = "REGISTER" onPress={this.UserRegistrationFunction} color="#028A7E"/>
-       </KeyboardAvoidingView>
+          <TextInput
+            //placeHolder
+            placeholder="Email Address"
+            onChangeText={(emailAddress) => this.setState({ emailAddress })}
+            borderColor='#028A7E'
+            keyboardType='email-address'
+            style={styles.TextInputStyleClass}
+          />
 
-        </View>
-        
+
+          <TextInput
+            //placeHolder
+            placeholder="Phone Number"
+            onChangeText={(phoneNumber) => this.setState({ phoneNumber })}
+            borderColor='#028A7E'
+            keyboardType='numeric'
+            //placeholderTextColor='#028A7E'
+            //underlineColorAndroid = '#028A7E'
+
+            style={styles.TextInputStyleClass}
+          />
+
+
+          {/*Next Page*/}
+          {/*<Button title = "NEXT" onPress={this.UserRegistrationFunction} color="#028A7E"/>*/}
+
+          {/* <Text style={styles.PageTitle}>ACOUNT INFORMATION</Text> */}
+          <TextInput
+            //placeHolder
+            placeholder="Barcode Number"
+            onChangeText={(barcodeNumber) => this.setState({ barcodeNumber })}
+            borderColor='#028A7E'
+            style={styles.TextInputStyleClass}
+          />
+
+
+          <TextInput
+            //placeHolder
+            placeholder="6-digit PIN"
+            onChangeText={(pin) => this.setState({ pin })}
+            style={styles.TextInputStyleClass}
+            borderColor='#028A7E'
+            secureTextEntry={true}
+          />
+          <Button title="REGISTER" onPress={this.UserRegistrationFunction} color="#028A7E" />
+        </KeyboardAvoidingView>
+
+      </View>
+
     );
-}
+  }
 }
 
 const styles = StyleSheet.create({
-    
-    ReservationContainer: {
-        justifyContent: 'flex-start',
-        flex: 1,
-        alignItems: 'center',
-        position: 'relative',
-        top: 100
-                //margin: 10,
-              
-    },
-    
 
-      TextInputStyleClass: {
-          textAlign: 'center',
-          alignItems: 'center',
-          marginBottom: 15,
-          height: 30,
-          width: '100%',
-          borderWidth: 1,
-          
-          
-      },
+  ReservationContainer: {
+    justifyContent: 'flex-start',
+    flex: 1,
+    alignItems: 'center',
+    position: 'relative',
+    top: 100
+    //margin: 10,
 
-      content: {
-        //marginTop: 50,
-        //marginLeft:10,
-        //marginRight:10,
-        //height: 350,
-        
-      }
+  },
+
+
+  TextInputStyleClass: {
+    textAlign: 'center',
+    alignItems: 'center',
+    marginBottom: 15,
+    height: 30,
+    width: '100%',
+    borderWidth: 1,
+
+
+  },
+
+  content: {
+    //marginTop: 50,
+    //marginLeft:10,
+    //marginRight:10,
+    //height: 350,
+
+  }
 
 
 });
@@ -314,7 +318,7 @@ AppRegistry.registerComponent('registration', () => registration);
 //             Alert.alert("Visitor Registred");
 //         });
 //     });
-    
+
 //   }
 //   render() {
 //     return (
@@ -333,13 +337,13 @@ AppRegistry.registerComponent('registration', () => registration);
 
 //       <TouchableOpacity style={styles.button} /* onPress={()=> this.submit()} */ onPress={() =>this.writeUserData()}  >
 //       <Text style={styles.btntext}> Registr  </Text>
-      
+
 //       </TouchableOpacity>
-      
+
 //       <TouchableOpacity style={styles.button}   >
 //       <TextInput style={{backgroundColor: '#1ec1f4'}}  placeholder='Visitor ID....' onChangeText={(matricNo) => this.setState({matricNo})} onSubmitEditing={()=> this.sendMatricNo()} />
 
-      
+
 //       </TouchableOpacity>
 
 //       </View>
@@ -395,5 +399,5 @@ AppRegistry.registerComponent('registration', () => registration);
 //       width: 100,
 //       height: 100,
 //     },
-    
+
 // });

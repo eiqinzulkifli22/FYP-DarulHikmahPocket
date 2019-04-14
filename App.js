@@ -77,7 +77,9 @@ export default class App extends React.Component{
   },
 
 }) */
-
+ 
+// 
+//
 const AppStackNavigator = createStackNavigator({
  
   LoginScreen: {screen: LoginScreen,              },

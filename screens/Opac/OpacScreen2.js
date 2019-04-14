@@ -1,65 +1,139 @@
-import React, { Component } from 'react';
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native';
-import SearchInput, { createFilter } from 'react-native-search-filter';
-import emails from '../mails';
-const KEYS_TO_FILTERS = ['user.name', 'subject'];
- 
-export default class App extends Component<{}> {
- constructor(props) {
-    super(props);
-    this.state = {
-      searchTerm: ''
+import React from 'react';
+import {View, Text,StyleSheet, FlatList} from 'react-native';
+import { Container, Content, Button } from 'native-base'
+import { Header, SearchBar } from 'react-native-elements';
+import '@expo/vector-icons';
+import { SecureStore } from 'expo';
+
+
+
+class OpacScreen2 extends React.Component{
+
+  state = {
+    data: []
+  }
+
+  componentWillMount() {
+    //function
+    this.fetchData();
+  }
+
+  fetchData = async () => {
+    //SecureStore.setItemAsync('user_token', result.token)
+    const response = await fetch("http://192.168.1.8:8000/api/book/search");
+    const json = await response.json();
+    this.setState({data: json.Book})
+  }
+
+    render(){
+        return(
+            <View style={styles.header}>
+        <Header
+          leftComponent={{
+            icon: 'menu',
+            color: '#fff',
+            onPress: () => {this.props.navigation.openDrawer()},
+          }}
+          
+          rightComponent={{ 
+            icon: 'person', 
+            color: '#fff',
+            onPress: () => this.props.navigation.navigate('My Account')}}
+          centerComponent={{  style: { color: '#fff' } }}
+          backgroundColor="#028A7E"
+        />
+            
+            <View style={styles.container}>
+                <FlatList data={this.state.data}
+                keyExtractor={(x,i) => i}
+                renderItem={({item}) => 
+                  <Text>
+                  {/* { `${item.title} ${item.author}`} */}
+                  hello
+                  </Text>}/>
+            </View>
+        </View>
+
+        )
     }
-  }
-  searchUpdated(term) {
-    this.setState({ searchTerm: term })
-  }
-  render() {
-    const filteredEmails = emails.filter(createFilter(this.state.searchTerm, KEYS_TO_FILTERS))
-    return (
-      <View style={styles.container}>
-        <SearchInput 
-          onChangeText={(term) => { this.searchUpdated(term) }} 
-          style={styles.searchInput}
-          placeholder="Type a message to search"
-          />
-        <ScrollView>
-          {filteredEmails.map(email => {
-            return (
-              <TouchableOpacity onPress={()=>alert(email.user.name)} key={email.id} style={styles.emailItem}>
-                <View>
-                  <Text>{email.user.name}</Text>
-                  <Text style={styles.emailSubject}>{email.subject}</Text>
-                </View>
-              </TouchableOpacity>
-            )
-          })}
-        </ScrollView>
-      </View>
-    );
-  }
 }
- 
+export default OpacScreen2;
+
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    justifyContent: 'flex-start'
-  },
-  emailItem:{
-    borderBottomWidth: 0.5,
-    borderColor: 'rgba(0,0,0,0.3)',
-    padding: 10
-  },
-  emailSubject: {
-    color: 'rgba(0,0,0,0.5)'
-  },
-  searchInput:{
-    padding: 10,
-    borderColor: '#CCC',
-    borderWidth: 1
-  }
-});
+    container:{
+        flex:1,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    header: {
+        flex: 1,
+        paddingTop: 4,
+        backgroundColor: '#ecf0f1',
+      }
+})
+
+// import React, { Component } from 'react';
+// import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native';
+// import SearchInput, { createFilter } from 'react-native-search-filter';
+// import emails from '../mails';
+// const KEYS_TO_FILTERS = ['user.name', 'subject'];
+ 
+// export default class App extends Component {
+//  constructor(props) {
+//     super(props);
+//     this.state = {
+//       searchTerm: ''
+//     }
+//   }
+//   searchUpdated(term) {
+//     this.setState({ searchTerm: term })
+//   }
+//   render() {
+//     const filteredEmails = emails.filter(createFilter(this.state.searchTerm, KEYS_TO_FILTERS))
+//     return (
+//       <View style={styles.container}>
+//         <SearchInput 
+//           onChangeText={(term) => { this.searchUpdated(term) }} 
+//           style={styles.searchInput}
+//           placeholder="Type a message to search"
+//           />
+//         <ScrollView>
+//           {filteredEmails.map(email => {
+//             return (
+//               <TouchableOpacity onPress={()=>alert(email.user.name)} key={email.id} style={styles.emailItem}>
+//                 <View>
+//                   <Text>{email.user.name}</Text>
+//                   <Text style={styles.emailSubject}>{email.subject}</Text>
+//                 </View>
+//               </TouchableOpacity>
+//             )
+//           })}
+//         </ScrollView>
+//       </View>
+//     );
+//   }
+// }
+ 
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     backgroundColor: '#fff',
+//     justifyContent: 'flex-start'
+//   },
+//   emailItem:{
+//     borderBottomWidth: 0.5,
+//     borderColor: 'rgba(0,0,0,0.3)',
+//     padding: 10
+//   },
+//   emailSubject: {
+//     color: 'rgba(0,0,0,0.5)'
+//   },
+//   searchInput:{
+//     padding: 10,
+//     borderColor: '#CCC',
+//     borderWidth: 1
+//   }
+// });
 
 
 

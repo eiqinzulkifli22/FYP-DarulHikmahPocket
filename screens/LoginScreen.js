@@ -9,11 +9,11 @@ import { StackNavigator } from 'react-navigation';
 import  { createStackNavigator }  from 'react-navigation';
 
 
-const DismissKeyboard = ({ children }) =>{
-  <TouchableWithoutFeedback onPress = {() => Keyboard.dismiss()}>
-      {children}
-  </TouchableWithoutFeedback>
-}
+// const DismissKeyboard = ({ children }) =>{
+//   <TouchableWithoutFeedback onPress = {() => Keyboard.dismiss()}>
+//       {children}
+//   </TouchableWithoutFeedback>
+// }
 
 // Creating Login Page
 export default class LoginScreen  extends Component {
@@ -39,7 +39,7 @@ let data = JSON.stringify({
 });
 
 	// Alert.alert(data);
-//	Alert.alert('Please wait.');
+	Alert.alert('Please wait.');
 // tukar ip address
 // AFFIQ	fetch("http://192.168.1.8:8000/api/login", {
 //  NASN fetch("http://172.20.10.14:8000/api/login", {

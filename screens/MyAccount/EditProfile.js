@@ -41,13 +41,6 @@ export default class EditProfile extends Component {
   //Creating function to send TextInput data on server
 
   UserUpdateFunction = () => {
-    // const { idNumber } = this.state;
-    // const { fullName } = this.state;
-    // const { centre } = this.state;
-    // const { emailAddress } = this.state;
-    // const { phoneNumber } = this.state;
-    // const { barcodeNumber } = this.state;
-    // const { pin } = this.state;
 
     let data = JSON.stringify({
       idNumber: this.state.idNumber,
@@ -206,10 +199,6 @@ const styles = StyleSheet.create({
   },
 
   content: {
-    //marginTop: 50,
-    //marginLeft:10,
-    //marginRight:10,
-    //height: 350,
     justifyContent: 'center',
     flex: 1,
     alignItems: 'center',

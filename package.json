@@ -12,17 +12,29 @@
     "expo": "^32.0.0",
     "expo-barcode-scanner": "^4.0.0",
     "firebase": "^5.9.3",
+    "material-design-icons": "^3.0.1",
     "native-base": "^2.12.1",
+    "prettier": "^1.17.0",
+    "prop-types": "^15.7.2",
     "react": "16.5.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
     "react-native-camera": "^2.2.1",
     "react-native-datepicker": "^1.7.2",
+    "react-native-dismiss-keyboard": "^1.0.0",
+    "react-native-dropdown-menu": "^2.0.0",
     "react-native-elements": "^1.1.0",
     "react-native-keyboard-avoid": "^1.2.0",
+    "react-native-keyboard-aware-scroll-view": "^0.8.0",
+    "react-native-loading-spinner-overlay": "^1.0.1",
+    "react-native-picker-cascader": "^1.0.0",
     "react-native-search-filter": "^0.1.4",
-    "react-navigation": "^3.4.1"
+    "react-native-slideshow": "^1.0.1",
+    "react-native-table-component": "^1.2.0",
+    "react-navigation": "^3.4.1",
+    "reinput": "^2.5.3"
   },
   "devDependencies": {
+    "babel-plugin-module-resolver": "^3.2.0",
     "babel-preset-expo": "^5.0.0"
   },
   "private": true

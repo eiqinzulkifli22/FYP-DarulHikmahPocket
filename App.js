@@ -1,8 +1,11 @@
-import React, {Component} from 'react';
-import {View, Text, StyleSheet, Image,
-      ScrollView, TouchableOpacity} from 'react-native';
-import {createStackNavigator, createAppContainer, createDrawerNavigator, gestureEnabled, createNavigationContainer, createSwitchNavigator, DrawerActions} from 'react-navigation';
-import {Container, Content, Header, Body, Icon} from 'native-base';
+import React, { Component } from 'react';
+import {
+  View, Text, StyleSheet, Image,
+  ScrollView, TouchableOpacity
+} from 'react-native';
+import { createStackNavigator, createAppContainer, createDrawerNavigator, TabNavigator, gestureEnabled, createNavigationContainer, createSwitchNavigator, DrawerActions } from 'react-navigation';
+import { Container, Content, Header, Body, Icon } from 'native-base';
+import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
 
 //import AppStackNavigator from './Navigator/AppStackNavigator';
 import HomeScreen from './screens/HomeScreen';
@@ -20,18 +23,23 @@ import MyAccountScreen from './screens/MyAccountScreen';
 import Profile from './screens/MyAccount/Profile';
 import List from './screens/MyAccount/List';
 import Hold from './screens/MyAccount/Hold';
+import AddHoldScanner from './screens/MyAccount/AddHoldScanner';
+import HoldCancel from './screens/MyAccount/HoldCancel';
 import Checkouts from './screens/MyAccount/Checkouts';
 import Fines from './screens/MyAccount/Fines';
-import Logout from './screens/MyAccount/Logout';
+import RenewBook from './screens/MyAccount/RenewBook';
+//import Logout from './screens/MyAccount/Logout';
 
 import OpacScreen from './screens/OpacScreen';
 import OpacScreen2 from './screens/Opac/OpacScreen2';
 import ViewBookDetails from './screens/Opac/ViewBookDetails';
-import OpacScreen3 from './screens/Opac/OpacScreen3';
+import ViewBookDetails2 from './screens/Opac/ViewBookDetails2';
+import ViewBookLoan from './screens/Opac/ViewBookLoan';
+
 
 import BarcodeScanner from './screens/Opac/BarcodeScanner';
 import BarcodeScanner2 from './screens/Opac/BarcodeScanner2';
-import LoanBarcodeScanner from './screens/LoanBarcodeScanner';
+import BarcodeScannerLoan from './screens/BarcodeScannerLoan';
 
 
 import FacilityReservationScreen from './screens/FacilityReservationScreen';
@@ -40,275 +48,139 @@ import Schedule from './screens/FacilityReservation/Schedule';
 import Form from './screens/FacilityReservation/Form';
 
 import LoginScreen from './screens/LoginScreen';
-import RegisterScreen from './screens/RegisterScreen'
-import ResetPasswordScreen from './screens/ResetPasswordScreen'
+import RegisterScreen from './screens/RegisterScreen';
+import ResetPinScreen from './screens/ResetPinScreen';
 
-// var config = {
-//   apiKey: "AIzaSyA62phh4l2jYHUaKD9DERTU8WLFO3zWziI",
-//   authDomain: "react-native-bb86a.firebaseapp.com",
-//   databaseURL: "https://react-native-bb86a.firebaseio.com",
-//   projectId: "react-native-bb86a",
-//   storageBucket: "react-native-bb86a.appspot.com",
-//   messagingSenderId: "606697324561"
-// };
-// firebase.initializeApp(config);
+export default class App extends React.Component {
 
 
+  render() {
+    return (
+      <AppContainer />
 
-export default class App extends React.Component{ 
-
-  
-    render(){
-        return(
-            <AppContainer/>
-           //<AppStackNavigator/>
-          // <HomeScreen/>
-          
-        )
-    }
+    )
+  }
 }
 
-/* export default createStackNavigator({
-  HomeScreen: {
-    screen: HomeScreen
-  },
-  IIUMLibScreen: {
-    screen: IIUMLibScreen
-  },
-
-}) */
-
 const AppStackNavigator = createStackNavigator({
- 
-  LoginScreen: {screen: LoginScreen,              },
-  HomeScreen:  {screen: HomeScreen,
-                navigationOptions: {
-                    gesturesEnabled: false
-    }},
-  IIUMLibScreen: {screen: IIUMLibScreen},
- 
-  OpacScreen: {screen: OpacScreen},
-  Facilities: {screen: Facilities}, 
-  FacilityReservationScreen: {screen: FacilityReservationScreen},
-  ListFacilities: {screen: ListFacilities},
 
-  OpeningHours: {screen: OpeningHours},
-  Contacts: {screen: Contacts},
-  News: {screen: News},
-  Events: {screen: Events},
-  Services: {screen: Services},
-  Collections: {screen: Collections},
-
-  MyAccountScreen: {screen: MyAccountScreen},
-  Profile: {screen: Profile},
-  List: {screen: List},
-  Hold: {screen: Hold},
-  Checkouts: {screen: Checkouts},
-  Fines: {screen: Fines},
-  Logout: {screen: Logout},
-  
-  OpacScreen2: {screen: OpacScreen2},
-  ViewBookDetails: {screen: ViewBookDetails},
-  OpacScreen3: {screen: OpacScreen3},
-  BarcodeScanner: {screen: BarcodeScanner},
-  BarcodeScanner2: {screen: BarcodeScanner2},
-  LoanBarcodeScanner: {screen: LoanBarcodeScanner},
-
-  Schedule: {screen: Schedule},
-  Form: {screen: Form},
-
-  RegisterScreen: {screen: RegisterScreen},
-  ResetPasswordScreen: {screen: ResetPasswordScreen},
-
-  
-},
-{
-  initialRouteName: 'LoginScreen',
-  navigationOptions: {
-    gesturesEnabled: false,
-    drawerLockMode: 'locked-closed'
-  },
-
+  LoginScreen: { screen: LoginScreen, },
   HomeScreen: {
+    screen: HomeScreen,
     navigationOptions: {
       gesturesEnabled: false
     }
-  }
-  
-
-}
-
-)  
- 
-
-/* export default createDrawerNavigator({
-  HomeScreen: {
-    screen: HomeScreen
   },
   IIUMLibScreen: {
-    screen: IIUMLibScreen
-  }
-}) */
-
- const AppDrawerNavigator = createDrawerNavigator({
-  LoginScreen: {screen: AppStackNavigator, navigationOptions: {drawerLabel: () => null}},
-  Home: {screen: HomeScreen}, 
-  'IIUM Library': {screen: IIUMLibScreen, navigationOptions: {title:'IIUM Library'}},
-  'My Account': {screen: MyAccountScreen, navigationOptions: {title:'My Account'}},
-  'Online Public Access Catalog': {screen: OpacScreen},
-  'Facility Reservation': {screen: FacilityReservationScreen, ListFacilities},
-  
-})
-
-
-    
-      
-    
-    
-
-   // nak samakan nama header bila buka each page
-    /* navigationOptions:({navigation}) => {
-      const {routeName} = navigation.state.routes[navigation.state.index];
-      return{
-        headerTitle: routeName
-      }
-    } */
-   
-  
-/* const AppSwitchNavigator = createSwitchNavigator({
-  HomeScreen : {screen: HomeScreen},
-  IIUMLibScreen: {screen: IIUMLibScreen},
-
-}) */
-
-
-
-const AppContainer = createAppContainer(AppDrawerNavigator);
-
-const styles = StyleSheet.create({
-    container:{
-        flex:1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    header: {
-      flex: 1,
-      paddingTop: 7,
-      backgroundColor: '#ecf0f1',
-    },
-   /*  drawerImage: {
-      height: 150,
-      width: 150,
-      boarderRadius: 75
-
-    } */
-})
-
-
-
-
-/* import React from 'react';
-import { StyleSheet, Text, View, ScrollView } from 'react-native';
-
-import {createStackNavigator, createAppContainer, createDrawerNavigator} from 'react-navigation';
-
-export default class App extends React.Component {
-  render() {
-    return (
-      <AppContainer/>
-    );
-  }
-}
-
-class Home extends React.Component {
-  render() {
-    return (
-
-      
-      <View style={styles.container}>
-        <Text>Home...</Text>
-      </View>
-    );
-  }
-}
-
-class Dashboard extends React.Component {
-  render() {
-    return (
-
-      <ScrollView>
-      <View style={{height: 1000}}>
-        <Text>Dashboard</Text>
-      </View>
-      </ScrollView>
-    );
-  }
-}
-
-
-class Feed extends React.Component {
-  render() {
-    return (
-
-      
-      <View style={styles.container}>
-        <Button title='Goto Detail Screen' onPress={()=>this.props.navigation.navigate('Detail')}/>
-      </View>
-    );
-  }
-}
-
-class IIUMLibrary extends React.Component {
-  render() {
-    return (
-
-      
-      <View style={styles.container}>
-        <Text>IIUM Library...</Text>
-      </View>
-    );
-  }
-}
-
-const AppStackNavigator = createStackNavigator({
-  Home: Home
-},
-{
-  defaultNavigationOptions: {
-    headerStyle: {
-      backgroundColor: '#028A7E'
+    screen: IIUMLibScreen,
+    navigationOptions: {
+      gesturesEnabled: false
     }
   },
-}
+
+  OpacScreen: {
+    screen: OpacScreen,
+    navigationOptions: {
+      gesturesEnabled: false
+    }
+  },
+  Facilities: { screen: Facilities },
+  FacilityReservationScreen: {
+    screen: FacilityReservationScreen,
+    navigationOptions: {
+      gesturesEnabled: false
+    }
+  },
+  ListFacilities: { screen: ListFacilities },
+
+  OpeningHours: { screen: OpeningHours },
+  Contacts: { screen: Contacts },
+  News: { screen: News },
+  Events: { screen: Events },
+  Services: { screen: Services },
+  Collections: { screen: Collections },
+
+  MyAccountScreen: {
+    screen: MyAccountScreen,
+    navigationOptions: {
+      gesturesEnabled: false
+    }
+  },
+  Profile: { screen: Profile },
+  List: { screen: List },
+  Hold: { screen: Hold },
+  AddHoldScanner: { screen: AddHoldScanner },
+  HoldCancel: { screen: HoldCancel },
+  Checkouts: { screen: Checkouts },
+  RenewBook: { screen: RenewBook },
+  Fines: { screen: Fines },
+
+  OpacScreen2: { screen: OpacScreen2 },
+  ViewBookDetails: { screen: ViewBookDetails },
+  ViewBookDetails2: { screen: ViewBookDetails2 },
+  ViewBookLoan: { screen: ViewBookLoan },
+  BarcodeScanner: { screen: BarcodeScanner },
+  BarcodeScanner2: { screen: BarcodeScanner2 },
+  BarcodeScannerLoan: { screen: BarcodeScannerLoan },
+
+  Schedule: { screen: Schedule },
+  Form: { screen: Form },
+
+  RegisterScreen: { screen: RegisterScreen },
+  ResetPinScreen: { screen: ResetPinScreen },
+
+},
+  {
+    activeTintColor: 'red',
+
+    initialRouteName: 'LoginScreen',
+    navigationOptions: {
+      gesturesEnabled: false,
+      drawerLockMode: 'locked-closed'
+    },
+  }
 )
 
 const AppDrawerNavigator = createDrawerNavigator({
-  
-    Home: Home,
-    Dashboard: Dashboard,
-    IIUMLibrary: IIUMLibrary
+  LoginScreen: {
+    screen: AppStackNavigator,
+    navigationOptions: { drawerLabel: () => null }
   },
+  Home: {
+    screen: HomeScreen,
+    navigationOptions: { drawerIcon: (<FontAwesome name='home' size={25} />) }
+  },
+  'IIUM Library': {
+    screen: IIUMLibScreen,
+    navigationOptions: { drawerIcon: (<FontAwesome name='university' size={20} />) }
+  },
+  'Online Public Access Catalog': {
+    screen: OpacScreen,
+    navigationOptions: { drawerIcon: (<FontAwesome name='search' size={20} />) }
+  },
+  'Facility Reservation': {
+    screen: FacilityReservationScreen,
+    navigationOptions: { drawerIcon: (<MaterialCommunityIcons name='chair-school' size={25} />) }
+  },
+
+},
   {
-    //dia pergi ke atas balik (refresh)
-    unmountInactiveRoutes: true,
-    defaultNavigationOptions: {
-      headerStyle: {
-        backgroundColor: '#028A7E'
-      }
-    }
+    activeTintColor: 'orange',
   }
 )
 
 const AppContainer = createAppContainer(AppDrawerNavigator);
-
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
-});
- */
+  header: {
+    flex: 1,
+    paddingTop: 7,
+    backgroundColor: '#ecf0f1',
+  },
+})

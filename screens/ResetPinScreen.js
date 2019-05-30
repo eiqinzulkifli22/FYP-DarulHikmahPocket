@@ -4,11 +4,12 @@ import {
   Text, ImageBackground, Image,
   KeyboardAvoidingView, Keyboard,
   TouchableWithoutFeedback, TouchableOpacity,
-  ActivityIndicator
 } from 'react-native';
 import { SecureStore } from 'expo';
-import Spinner from 'react-native-loading-spinner-overlay';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { HeaderBackButton } from 'react-navigation';
 
+import Spinner from 'react-native-loading-spinner-overlay';
 
 // Importing Stack Navigator library to add multiple activities.
 import { StackNavigator } from 'react-navigation';
@@ -16,42 +17,42 @@ import { createStackNavigator } from 'react-navigation';
 import { colors } from 'react-native-elements';
 
 
-// Creating Login Page
-export default class LoginScreen extends Component {
 
+
+// Creating Login Page
+export default class ResetPinScreen extends Component {
+  static navigationOptions = ({ navigation }) => ({
+    title: 'RESET PIN',
+    headerLeft: (
+      <HeaderBackButton
+        onPress={() => { navigation.navigate('LoginScreen') }} />
+    )
+  })
   // // Setting up Login Activity title.
   constructor(props) {
     super(props)
     this.state = {
       barcodeNumber: '',
       pin: '',
-      name: '',
-      // spinner: false,
-
+      tac: '',
+      //name: ''
     }
   }
-
-  componentDidMount() {
-    setInterval(() => {
-      this.setState({
-        spinner: !this.state.spinner
-      });
-    }, 3000);
-  }
-
-  UserLoginFunction = () => {
+  RequestTAC = () => {
     Keyboard.dismiss
     const { barcodeNumber } = this.state;
     const { pin } = this.state;
+    const { tac } = this.state;
 
     let data = JSON.stringify({
       barcodeNumber: barcodeNumber,
-      pin: pin
+      pin: pin,
+      tac: tac
 
     });
 
     //Current IP Address
-    fetch("http://172.20.10.14:8000/api/login", {
+    fetch("http://172.20.10.14:8000/api/requestTAC", {
 
       method: 'POST',
       headers: {
@@ -64,11 +65,58 @@ export default class LoginScreen extends Component {
         (result) => {
           if (result.success) {
 
-            Alert.alert('Login succeeded!');
+            Alert.alert('TAC has been send to your email!');
             console.log(result.token);
             Keyboard.dismiss()
             SecureStore.setItemAsync('user_token', result.token)
-            this.props.navigation.navigate('HomeScreen')
+            //this.props.navigation.navigate('HomeScreen')
+
+          }
+          else {
+            Alert.alert('Reset PIN failed! ' + result.message);
+          }
+        },
+        (error) => {
+          // Alert.alert(error);
+          Alert.alert("An error just occurred.");
+        }
+      )
+  }
+
+
+  ResetUserPIN = () => {
+    Keyboard.dismiss
+    const { barcodeNumber } = this.state;
+    const { pin } = this.state;
+    const { tac } = this.state;
+
+    let data = JSON.stringify({
+      barcodeNumber: barcodeNumber,
+      pin: pin,
+      tac: tac
+
+    });
+
+    // Current IP Address
+    fetch("http://172.20.10.14:8000/api/changePassword", {
+
+
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: data,
+    })
+      .then(res => res.json())
+      .then(
+        (result) => {
+          if (result.success) {
+
+            Alert.alert(result.message);
+            console.log(result.token);
+            Keyboard.dismiss()
+            SecureStore.setItemAsync('user_token', result.token)
+            this.props.navigation.navigate('LoginScreen')
 
           }
           else {
@@ -81,26 +129,19 @@ export default class LoginScreen extends Component {
         }
       )
   }
-  static navigationOptions = ({ navigation }) => ({
-    header: null,
 
 
-  })
   render() {
     return (
 
-      <ImageBackground source={require('./main.jpg')} opacity={0.11} style={styles.backgroundImage}>
-
+      <ImageBackground source={require('././main.jpg')} opacity={0.11} style={styles.backgroundImage}>
         <View style={styles.container}>
-
-          <Image source={require('./output.png')} style={styles.logo} size={55} />
-
         </View>
 
         <View style={styles.MainContainer} >
           <KeyboardAvoidingView style={styles.content} behavior="position" makeScrollable >
 
-            <View style={[{ position: 'absolute', top: -105, left: -150, right: 50 }]}>
+            <View style={[{ position: 'absolute', top: -143, left: -150, right: 50 }]}>
               <TextInput style={styles.input}
 
                 // Adding hint in Text Input using Place holder.
@@ -111,12 +152,12 @@ export default class LoginScreen extends Component {
                 borderColor='#028A7E'
                 style={styles.TextInputStyleClass}
                 returnKeyType='done'
-
               />
+
               <TextInput
 
                 // Adding hint in Text Input using Place holder.
-                placeholder="PIN"
+                placeholder="New PIN"
                 onChangeText={pin => this.setState({ pin })}
                 // Making the Under line Transparent.
                 // underlineColorAndroid='transparent'
@@ -127,43 +168,42 @@ export default class LoginScreen extends Component {
                 returnKeyType='done'
               />
 
+              <View style={[{ width: 150, height: 50, left: 73, position: 'absolute', top: 107, }]}>
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={this.RequestTAC}
+                >
+                  <Text style={{ color: "#FFFFFF", fontSize: 15 }}> REQUEST TAC </Text>
+
+                </TouchableOpacity>
+                {/* <Button style={[{ fontSize: 1, color: 'red' }]} title="Forgot PIN?" onPress={() => this.props.navigation.navigate('ResetPinScreen')} color="red" /> */}
+              </View>
+
+              <View style={[{ position: 'absolute', top: 170, left: 0, right: 50 }]}>
+
+                <TextInput style={styles.input}
+
+                  // Adding hint in Text Input using Place holder.
+                  placeholder="TAC"
+                  onChangeText={tac => this.setState({ tac })}
+                  // Making the Under line Transparent.
+                  //underlineColorAndroid='transparent'
+                  borderColor='#028A7E'
+                  style={styles.TextInputStyleClass}
+                  secureTextEntry={true}
+                  keyboardType='numeric'
+                  returnKeyType='done'
+                />
+              </View>
             </View>
           </KeyboardAvoidingView>
-          <View style={[{ width: "30%", height: 70, position: 'absolute', top: 125 }]}>
+
+          <View style={[{ width: "30%", height: 70, position: 'absolute', top: 165 }]}>
             <TouchableOpacity
               style={styles.button}
-              onPress={this.UserLoginFunction}
+              onPress={this.ResetUserPIN}
             >
-              <Text style={{ color: "#FFFFFF", fontSize: 17 }}> LOG IN </Text>
-            </TouchableOpacity>
-          </View>
-
-          <View style={[{ width: "70%", height: 70, position: 'absolute', top: 150, justifyContent: 'center', alignItems: 'center' }]}>
-            <TouchableOpacity
-              onPress={() => this.props.navigation.navigate('ResetPinScreen')}
-            >
-              <Text style={{ color: "red", fontSize: 15 }}> Forgot PIN? </Text>
-
-            </TouchableOpacity>
-          </View>
-
-
-          <View style={[{ width: "70%", height: 70, position: 'absolute', top: 255, justifyContent: 'center', alignItems: 'center' }]}>
-            <TouchableOpacity
-              onPress={() => this.props.navigation.navigate('RegisterScreen')}
-            >
-              <Text style={{ color: "#028a7E", fontSize: 17 }}> New to Darul Hikmah Pocket? </Text>
-
-            </TouchableOpacity>
-          </View>
-
-
-          <View style={[{ width: "70%", height: 70, position: 'absolute', top: 275, justifyContent: 'center', alignItems: 'center' }]}>
-            <TouchableOpacity
-              onPress={() => this.props.navigation.navigate('RegisterScreen')}
-            >
-              <Text style={{ color: "#028a7E", fontSize: 16, fontWeight: 'bold' }}> Register Now! </Text>
-
+              <Text style={{ color: "#FFFFFF", fontSize: 15 }}> RESET </Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -180,12 +220,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flex: 1,
     alignItems: 'center',
+    top: 60
   },
 
   container: {
-    padding: 10,
-    //selectionColor: '#5BC3EB',
-    //underlineColorAndroid: '#91918E',
     marginVertical: 10,
     paddingBottom: 200
 
@@ -195,12 +233,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     alignItems: 'center',
     marginBottom: 15,
-    marginLeft: 30,
     height: 35,
-    width: 250,
-    borderRadius: 13,
+    width: 300,
+    borderRadius: 10,
     borderWidth: 1,
-    opacity: 0.8
   },
 
 
@@ -230,18 +266,17 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    height: 170,
-    width: 170,
-    opacity: 0.8,
+    height: 150,
+    width: 150,
     resizeMode: 'contain',
     //boarderBottom: 200,
-    paddingBottom: 150,
-    paddingTop: 5,
-    marginLeft: 119,
+    paddingBottom: 100,
+    paddingTop: 1,
+    marginLeft: 140
   },
 
   content: {
-    marginTop: 50,
+    marginTop: 20,
     //marginLeft:10,
     //marginRight:10,
     height: 350,
@@ -264,13 +299,15 @@ const styles = StyleSheet.create({
     borderColor: '#fff'
   },
 
-  forgotPIN: {
-    fontSize: 10,
+  buttonTAC: {
+    alignItems: 'center',
+    backgroundColor: '#028A7E',
+    padding: 10,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#fff'
   },
-
-  spinnerTextStyle: {
-    color: '#FFF'
-  },
-
 });
+
+
 

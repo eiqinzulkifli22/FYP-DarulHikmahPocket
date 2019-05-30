@@ -1,7 +1,8 @@
 import React from 'react';
-import {View, Text, StyleSheet, Platform, LayoutAnimation, ScrollView, UIManager, TouchableOpacity} from 'react-native';
-import { Header} from 'react-native-elements';
+import { Image, View, Text, StyleSheet, Platform, LayoutAnimation, ScrollView, UIManager, TouchableOpacity } from 'react-native';
 import '@expo/vector-icons';
+import { HeaderBackButton } from 'react-navigation';
+
 
 class Accordion_Panel extends React.Component {
 
@@ -49,6 +50,7 @@ class Accordion_Panel extends React.Component {
 
     return (
 
+
       <View style={styles.Panel_Holder}>
 
         <TouchableOpacity activeOpacity={0.7} onPress={this.props.onClickFunction} style={styles.Btn}>
@@ -73,10 +75,14 @@ class Accordion_Panel extends React.Component {
   }
 }
 
-class Contacts extends React.Component{
-    
-  static navigationOptions = ({navigation}) => ({
-    title: 'Contacts'
+class Contacts extends React.Component {
+
+  static navigationOptions = ({ navigation }) => ({
+    title: 'CONTACTS',
+    headerLeft: (
+      <HeaderBackButton
+        onPress={() => { navigation.navigate('IIUMLibScreen') }} />
+    )
   })
 
   constructor() {
@@ -93,11 +99,11 @@ class Contacts extends React.Component{
       { expanded: false, title: "IIUM Library", body: "Dar al-Hikmah Library \nInternational Islamic University Malaysia \nP.O Box 10, 50738 \n Kuala Lumpur, Malaysia \n\nPhone: \n+603 - 6196 4815 \n\nFax: \n+603 - 6196 4855" },
 
       //Syed Muhammad Naquib al-Attas Library
-      { expanded: false, title: "Syed Muhammad Naquib al-Attas Library", body: "The International Institute of Islamic Thought and Civilisation (ISTAC) \nNo.24 Jalan Tuanku Syed Sirajuddin \nTaman Duta, 50480 \nKuala Lumpur, Malaysia \n\nPhone: \n+603 - 6207 3430 \n\nFax: \n+603 - 6207 3478"},
-      
+      { expanded: false, title: "Syed Muhammad Naquib al-Attas Library", body: "The International Institute of Islamic Thought and Civilisation (ISTAC) \nNo.24 Jalan Tuanku Syed Sirajuddin \nTaman Duta, 50480 \nKuala Lumpur, Malaysia \n\nPhone: \n+603 - 6207 3430 \n\nFax: \n+603 - 6207 3478" },
+
       //Kuantan Library & CFS Gambang Library
       { expanded: false, title: "Kuantan Library & CFS Gambang Library", body: "IIUM Library Kuantan & CFS Gambang \nInternational Islamic University Malaysia \nJalan Sultan Ahmad Shah \nBandar Indera Mahkota \n25200 Kuantan \nPahang Darul Makmur, Malaysia \n\nCustomer Service Librarians: \n+609 - 570 4187/4188 \n\nPhone: \n+609 - 570 4000 (ext. 3456/4180) \\nnFax: \n+609 - 570 4382" },
-      
+
       //Pagoh Edu Hub Library
       { expanded: false, title: "Pagoh Edu Hub Library", body: "International Islamic University Malaysia \nPagoh Edu Hub KM \n1, Jalan Panchor\n84600 Pagoh. Muar \nJohor Darul Takzim, Malaysia" },
     ];
@@ -126,54 +132,29 @@ class Contacts extends React.Component{
       }
     });
   }
-   /*  static navigationOptions = ({navigation}) => ({
-        header: null
-      }) */
-      
-  /*   constructor(props) {
-        super(props)
-    }
- */
-    render(){
-        return(
+
+  render() {
+    return (
+
+      <View style={styles.header}>
+        <View style={styles.MainContainer}>
+
+          <ScrollView contentContainerStyle={{ paddingHorizontal: 10, paddingVertical: 5 }}>
+            {
+              this.state.AccordionData.map((item, key) =>
+                (
+                  <Accordion_Panel key={key} onClickFunction={this.update_Layout.bind(this, key)} item={item} />
+                ))
+            }
+          </ScrollView>
+
+        </View>
+
+      </View>
 
 
-            <View style={styles.header}>
-       {/* <Header
-          leftComponent={{
-            icon: 'menu',
-            color: '#fff',
-            onPress: () => {this.props.navigation.openDrawer()},
-          }}
-          
-          rightComponent={{ 
-            icon: 'person', 
-            color: '#fff',
-            onPress: () => this.props.navigation.navigate('My Account')}}
-          centerComponent={{  style: { color: '#fff' } }}
-          backgroundColor="#028A7E"
-        /> */}
-
-              <View style={styles.MainContainer}>
-
-                  {/*  <Text style={styles.PageTitle}>CONTACTS</Text> */}
-
-                      <ScrollView contentContainerStyle={{ paddingHorizontal: 10, paddingVertical: 5 }}>
-                            {
-                              this.state.AccordionData.map((item, key) =>
-                                (
-                                  <Accordion_Panel key={key} onClickFunction={this.update_Layout.bind(this, key)} item={item} />
-                                ))
-                            }
-                        </ScrollView>
-
-               </View>
-
-        </View> 
-      
-     
-        )
-    }
+    )
+  }
 }
 export default Contacts;
 
@@ -208,9 +189,15 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: '#028A7E'
   },
-    header: {
-        flex: 1,
-        paddingTop: 4,
-        backgroundColor: '#ecf0f1',
-      }
+
+  header: {
+    flex: 1,
+    paddingTop: 4,
+    backgroundColor: '#ecf0f1',
+  },
+  backgroundImage: {
+    flex: 1,
+    resizeMode: 'cover', // or 'stretch'
+
+  },
 })

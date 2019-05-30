@@ -7,7 +7,7 @@ import { SecureStore } from 'expo';
 import { env } from 'config/env.js';
 import '@expo/vector-icons';
 
-class ViewBookDetails extends React.Component {
+class ViewBookDetails2 extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -38,11 +38,11 @@ class ViewBookDetails extends React.Component {
 
             if (result.success) {
               Alert.alert('Hold succeeded! ' + result.message);
-              this.props.navigation.navigate('OpacScreen')
+              this.props.navigation.navigate('OpacScreen2')
             }
             else {
               Alert.alert('Hold failed! ' + result.message);
-              this.props.navigation.navigate('OpacScreen')
+              this.props.navigation.navigate('OpacScreen2')
             }
           },
             (error) => {
@@ -56,19 +56,21 @@ class ViewBookDetails extends React.Component {
 
 
   static navigationOptions = ({ navigation }) => ({
-    title: 'BOOK DETAILS '
+    title: 'BOOK DETAILS'
     // header: null
   })
   render() {
-    const { book } = this.props.navigation.state.params;
-    console.log(book)
+    const { item } = this.props.navigation.state.params;
+    console.log(item)
 
     return (
+      // header style
       <View style={styles.header}>
 
-        <Image source={{ uri: book.cover_page_url }} style={styles.bookImage} />
+        <Image source={{ uri: item.cover_page_url }} style={styles.bookImage} />
 
         <View style={{ flex: 1, alignItems: 'center', }}>
+          {/* <Text>My Account Screen</Text> */}
           <TouchableOpacity onPress={() => this.props.navigation.navigate('ViewBookDetails')}
             key={88}>
             <View style={styles.container}>
@@ -87,45 +89,41 @@ class ViewBookDetails extends React.Component {
               </View>
 
               <View style={styles.rightColumn}>
-                <Text>: {book.title}</Text>
-                <Text>: {book.author}</Text>
-                <Text>: {book.publication_year}</Text>
-                <Text>: {book.publisher}</Text>
-                <Text>: {book.edition}</Text>
-                <Text>: {book.isbn}</Text>
+                <Text>: {item.title}</Text>
+                <Text>: {item.author}</Text>
+                <Text>: {item.publication_year}</Text>
+                <Text>: {item.publisher}</Text>
+                <Text>: {item.edition}</Text>
+                <Text>: {item.isbn}</Text>
                 <Text></Text>
-                <Text>: {book.call_no}</Text>
-                <Text>: {book.library_location}</Text>
-                <Text>: {book.book_level}</Text>
-                <Text>: {book.book_shelf}</Text>
+                <Text>: {item.call_no}</Text>
+                <Text>: {item.library_location}</Text>
+                <Text>: {item.book_level}</Text>
+                <Text>: {item.book_shelf}</Text>
               </View>
             </View>
           </TouchableOpacity>
-
         </View>
 
         <View style={[{ width: "45%", height: 70, position: 'absolute', top: 550, left: 125 }]}>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => { this.BookHold(book.id) }}
+            onPress={() => { this.BookHold(item.id) }}
           >
             <Text style={{ color: "#FFFFFF", fontSize: 15 }}> HOLD </Text>
           </TouchableOpacity>
         </View>
+
+
       </View>
     )
   }
 }
-export default ViewBookDetails;
+export default ViewBookDetails2;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  header: {
-    flex: 1,
-    paddingTop: 4,
-    backgroundColor: '#ecf0f1',
   },
 
   button: {
@@ -155,9 +153,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 300,
     left: -100,
-    // right: -200,
-    // paddingRight: 7,
-
   },
 
   bookImage: {
@@ -167,5 +162,4 @@ const styles = StyleSheet.create({
     width: 120,
     top: 40,
   }
-
 })

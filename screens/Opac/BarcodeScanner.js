@@ -1,9 +1,18 @@
-
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Alert } from 'react-native';
 import { BarCodeScanner, Permissions, SecureStore } from 'expo';
+import { env } from 'config/env.js';
+import { HeaderBackButton } from 'react-navigation';
 
 export default class BarcodeScanner extends React.Component {
+  static navigationOptions = ({navigation}) => ({
+    title:'SCAN ISBN',
+    headerLeft:(
+      <HeaderBackButton 
+        onPress={()=>{navigation.navigate('OpacScreen')}}/>
+        )
+  }) 
+
    state = {
     hasCameraPermission: null,
   } 
@@ -30,56 +39,46 @@ export default class BarcodeScanner extends React.Component {
         <BarCodeScanner
           onBarCodeScanned={this.handleBarCodeScanned}
           style={StyleSheet.absoluteFill}
-        />     
+        />
       </View>
     );
   }
 
   handleBarCodeScanned = ( {type, data} ) => {
- 
+    const that = this
     SecureStore.getItemAsync('user_token')
       .then((token) => {
-        const {title} = this.state;
-        const {isbn} = this.state;
-       
-        fetch("http://192.168.1.8:8000/api/book/search", {
+       fetch(env('LARAVEL_HOST') + "/api/book/search", {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + token,
           },
 
-         
-
           body: JSON.stringify({
             term : data,
-            title : title,
-            isbn : isbn,
           }),
         })
         .then(res => res.json())
         //Vibration.vibrate(DURATION)
         .then(
           (books) => {
-            console.log(books);
-            
+            // console.log(books);
+            // save books in a central state
 
-            books.forEach(book => {
-              return (
-                <TouchableOpacity onPress={()=>this.props.navigation.navigate('ViewBookDetails')} 
-                                key={book.id}>  
-                  <View>
-                    <Text>{book.title}</Text>
-                  </View>
-                </TouchableOpacity>
-              )
-            });
+            if(books.length == 0) {
+              Alert.alert("Record not found.");
+            }
+            else {
+              that.props.navigation.navigate('ViewBookDetails', {
+                book: books[0],
+              })
+            }
           }
         );
-      });
+      })
   }
-}  
- 
+}
 
 const styles = StyleSheet.create({
   container: {

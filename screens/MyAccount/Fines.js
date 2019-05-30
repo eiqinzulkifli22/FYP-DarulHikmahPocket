@@ -1,76 +1,41 @@
 import React from 'react';
-import { View, Text, StyleSheet, Button} from 'react-native';
-import { Icon,  Container, Content, Left } from 'native-base'
-import {Header, SearchBar } from 'react-native-elements';
-import {createStackNavigator, createAppContainer, createDrawerNavigator, createSwitchNavigator,  createNavigationContainer} from 'react-navigation';
-//import OpeningHoursSreen from './screens/OpeningHoursSreen';
+import { View, Text, StyleSheet} from 'react-native';
 import '@expo/vector-icons';
+import { HeaderBackButton } from 'react-navigation';
 
+class Fines extends React.Component {
 
-
-class Fines extends React.Component{
-
-  static navigationOptions = ({navigation}) => ({
-    title: 'Fines'
-    
+  static navigationOptions = ({ navigation }) => ({
+    title: 'FINES',
+    headerLeft: (
+      <HeaderBackButton
+        onPress={() => { navigation.navigate('MyAccountScreen') }} />
+    )
   })
 
-   /*  static navigationOptions = {
-        headerTitle: <HomeScreen/>,
-        headerLeft: (
-          <Button
-            onPress={() => alert('This is a button!')}
-            title="Info"
-            color="#fff"
-          />
-        ),
-      }; */
-
-    render(){
-        return(
-
-             <View style={styles.header}>
-       {/*  <Header
-        
-          leftComponent={{
-            icon: 'menu',
-            color: '#fff',
-            onPress: () => {this.props.navigation.openDrawer()},
-          }}
-          
-          rightComponent={{ 
-            icon: 'person', 
-            color: '#fff',
-            onPress: () => this.props.navigation.navigate('My Account')}}
-          centerComponent={{  style: { color: '#fff' } }}
-          backgroundColor="#028A7E"
-        />  */}
-
-          <View style={styles.container}>  
-            
-              <Text>Fines</Text>
-
-              
-              
-          </View>
-        </View>  
-        )
-    }
+  render() {
+    return (
+      <View style={styles.header}>
+        <View style={styles.container}>
+          <Text>User has no fines.</Text>
+        </View>
+      </View>
+    )
+  }
 }
-
 
 export default Fines;
 
 const styles = StyleSheet.create({
-    container:{
-        flex:1,
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
 
-    header: {
-        flex: 1,
-        paddingTop: 4,
-        backgroundColor: '#ecf0f1',
-      }
+  header: {
+    flex: 1,
+    paddingTop: 4,
+    backgroundColor: '#ecf0f1',
+  }
 })  

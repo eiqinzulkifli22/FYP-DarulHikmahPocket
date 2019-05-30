@@ -1,17 +1,12 @@
 import React, { Component } from 'react';
-
 import { Platform, LayoutAnimation, StyleSheet, View, Text, ScrollView, UIManager, TouchableOpacity } from 'react-native';
+import { HeaderBackButton } from 'react-navigation';
 
 class Accordion_Panel extends Component {
-
   constructor() {
-
     super();
-
     this.state = {
-
       updated_Height: 0
-
     }
   }
 
@@ -35,37 +30,27 @@ class Accordion_Panel extends Component {
   shouldComponentUpdate(update_Props, nextState) {
 
     if (update_Props.item.expanded !== this.props.item.expanded) {
-
       return true;
-
     }
 
     return false;
-
   }
 
   render() {
-
     return (
 
       <View style={styles.Panel_Holder}>
 
         <TouchableOpacity activeOpacity={0.7} onPress={this.props.onClickFunction} style={styles.Btn}>
-
           <Text style={styles.Panel_Button_Text}>{this.props.item.title} </Text>
-
         </TouchableOpacity>
 
         <View style={{ height: this.state.updated_Height, overflow: 'hidden' }}>
-
           <Text style={styles.Panel_text}>
-
             {this.props.item.body}
-
           </Text>
 
         </View>
-
       </View>
 
     );
@@ -73,8 +58,12 @@ class Accordion_Panel extends Component {
 }
 
 export default class ListFacilities extends Component {
-  static navigationOptions = ({navigation}) => ({
-    title: 'ROOMS'
+  static navigationOptions = ({ navigation }) => ({
+    title: 'ROOMS',
+    headerLeft: (
+      <HeaderBackButton
+        onPress={() => { navigation.navigate('FacilityReservationScreen') }} />
+    )
   })
   constructor() {
     super();
@@ -97,7 +86,7 @@ export default class ListFacilities extends Component {
 
       //Viewing Room
       { expanded: false, title: "Viewing Room", body: "Viewing rooms available at the Multimedia & Special Collections area at Level 3 " },
-     
+
 
     ];
 
@@ -129,9 +118,6 @@ export default class ListFacilities extends Component {
   render() {
     return (
       <View style={styles.MainContainer}>
-
-      {/* <Text style={styles.PageTitle}>ROOMS</Text> */}
-
         <ScrollView contentContainerStyle={{ paddingHorizontal: 10, paddingVertical: 5 }} top={100}>
           {
             this.state.AccordionData.map((item, key) =>
@@ -150,24 +136,21 @@ const styles = StyleSheet.create({
 
   MainContainer: {
     flex: 1,
-alignItems: 'center',
+    alignItems: 'center',
     justifyContent: 'center',
-    //paddingTop: (Platform.OS === 'ios') ? 20 : 0
   },
 
   PageTitle: {
     textAlign: 'center',
-    //fontsize: 100,
     color: '#028A7E',
     fontWeight: 'bold',
     marginBottom: 25,
     position: 'absolute',
     top: 50,
-    
+
   },
 
   Panel_text: {
-    //fontSize: 18,
     color: '#000',
     padding: 10,
     textAlign: 'center',
@@ -176,7 +159,6 @@ alignItems: 'center',
   Panel_Button_Text: {
     textAlign: 'center',
     color: '#fff',
-    //fontSize: 21
   },
 
   Panel_Holder: {

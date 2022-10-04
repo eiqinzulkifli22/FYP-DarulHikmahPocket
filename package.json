@@ -9,7 +9,7 @@
   "dependencies": {
     "@shoutem/theme": "^0.11.3",
     "@shoutem/ui": "^0.23.20",
-    "expo": "^32.0.0",
+    "expo": "^46.0.14",
     "expo-barcode-scanner": "^4.0.0",
     "firebase": "^5.9.3",
     "native-base": "^2.12.1",
